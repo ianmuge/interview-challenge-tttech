@@ -14,10 +14,10 @@ Tasks:
 ## Tasks
 - [x] Provision
 - [x] Setup
-- [] Deploy
+- [x] Deploy
     - [x] task 1
     - [x] task 2
-    - [] task 3
+    - [x] task 3
 
 ## Prerequisites
 - All deployment will be run on the default VPC. If you wish to build a new VPC you can use the repo below
@@ -48,7 +48,8 @@ ansible-playbook  -u ec2-user  -i ec2.py  -T 60 -f 100 --private-key=~/{keypair}
 
 - **Task 1**: This exposes a hello world page hosted on an nginx base image, reachable on port 8080.
 - **Task 2**: This acts as a proxy fetching requests from the initial nginx hello-world container
-- **Task 3**: 
+- **Task 3**: We install and setup centos-minimal on VirtualBox
+
 - P.S. : You should allow the working ports on the AWS security Group to allow for access
     - 8080
     - 80

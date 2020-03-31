@@ -1,0 +1,23 @@
+---
+- name: Docker setup and Preparation
+  hosts: tag_service_Test
+  user: ec2-user
+  gather_facts: true
+  vars:
+    http_port: 80
+    alt_port: 8080
+  pre_tasks:
+    - name: Run update
+      become: yes
+      yum:
+        name: "*"
+        state: latest
+  roles:
+    - name: Setup
+      become: yes
+  post_tasks:
+    # - name: check that service is responding
+    #   uri:
+    #     url: "http://localhost"
+    #     return_content: yes
+    #     status_code: 200,302

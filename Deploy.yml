@@ -1,0 +1,23 @@
+---
+- name: Docker Deploy
+  hosts: tag_service_Test
+  user: ec2-user
+  gather_facts: false
+  vars:
+    docker_network_name: demo
+  pre_tasks:
+    - name: create demo docker network
+      docker_network:
+        name: "{{docker_network_name}}"
+    - name: prune images and containers
+      docker_prune:
+        containers: yes
+        images: yes
+  roles:
+    - name: Deploy
+  post_tasks:
+    - name: check that service is responding
+      uri:
+        url: "http://localhost:8080"
+        return_content: yes
+        status_code: 200,302

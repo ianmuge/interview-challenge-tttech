@@ -1,0 +1,33 @@
+---
+- name: task 1 (nginx webserver port 8080)
+  block:
+    - name: upload the site directory to the docker host
+      synchronize: 
+        src: files/task_1
+        dest: /tmp
+      register: sync_result
+    - name: build image
+      docker_image: 
+        name: nginx-sample
+        tag: latest
+        build:
+          path: /tmp/task_1
+        state: present
+      # when: sync_result.changed
+    - name: run container
+      docker_container:
+        name: nginx_container
+        image: "nginx-sample:latest"
+        ports:
+          - "8080:80"
+          - "80:80"
+        networks:
+          - name: "{{ docker_network_name }}"
+        state: started
+      # when: sync_result.changed
+    # - name: run docker build
+    #   command: "docker build --network=demo -t nginx-sample:latest /tmp/files/task_1"
+    #   when: sync_result.changed
+
+# - name: task 2
+# - name: task 3

@@ -2,7 +2,7 @@
 - name: Docker Deploy
   hosts: tag_service_Test
   user: ec2-user
-  gather_facts: false
+  gather_facts: true
   vars:
     docker_network_name: demo
   pre_tasks:

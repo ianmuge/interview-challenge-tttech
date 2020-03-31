@@ -1,33 +1,56 @@
 ---
 - name: task 1 (nginx webserver port 8080)
   block:
-    - name: upload the site directory to the docker host
+    - name: upload the task_1 directory to the docker host
       synchronize: 
         src: files/task_1
         dest: /tmp
-      register: sync_result
-    - name: build image
+      register: task_1_sync_result
+    - name: build task_1 image
       docker_image: 
         name: nginx-sample
         tag: latest
+        source: build
         build:
           path: /tmp/task_1
+          pull: yes
+
         state: present
-      # when: sync_result.changed
-    - name: run container
+      # when: task_1_sync_result.changed
+    - name: run task_1 container
       docker_container:
         name: nginx_container
         image: "nginx-sample:latest"
         ports:
           - "8080:80"
-          - "80:80"
+          # - "80:80"
         networks:
           - name: "{{ docker_network_name }}"
         state: started
-      # when: sync_result.changed
-    # - name: run docker build
-    #   command: "docker build --network=demo -t nginx-sample:latest /tmp/files/task_1"
-    #   when: sync_result.changed
+      # when: task_1_sync_result.changed
 
-# - name: task 2
+- name: task 2
+  block:
+    - name: upload the task_2 directory to the docker host
+      synchronize: 
+        src: files/task_2
+        dest: /tmp
+      register: task_2_sync_result
+    - name: build task_2 image
+      docker_image: 
+        name: alpine-sample
+        tag: latest
+        source: build
+        build:
+          path: /tmp/task_2
+          pull: yes
+        state: present
+      # when: task_2_sync_result.changed
+    - name: run task_2 container
+      shell: "docker run alpine-sample:latest curl -vvv http://{{ec2_private_ip_address}}:8080"
+      register: curl_output
+
+    - name: debug webpage
+      debug: 
+        var: curl_output      
 # - name: task 3

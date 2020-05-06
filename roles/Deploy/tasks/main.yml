@@ -47,7 +47,7 @@
         state: present
       # when: task_2_sync_result.changed
     - name: run task_2 container
-      shell: "docker run alpine-sample:latest curl -vvv http://{{ec2_private_ip_address}}:8080"
+      shell: "docker run alpine-sample:latest curl -vvv http://{{hostvars[inventory_hostname]['ansible_default_ipv4']['address']}}:8080"
       register: curl_output
 
     - name: debug webpage

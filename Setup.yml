@@ -1,7 +1,6 @@
 ---
 - name: Docker setup and Preparation
-  hosts: tag_service_Test
-  user: ec2-user
+  hosts: all
   gather_facts: true
   vars:
     http_port: 80
